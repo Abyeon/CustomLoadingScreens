@@ -15,6 +15,7 @@
         "IsTestingExclusive": false,
         "DownloadLinkInstall": "https://github.com/Abyeon/CustomLoadingScreens/releases/latest/download/latest.zip",
         "DownloadLinkUpdate": "https://github.com/Abyeon/CustomLoadingScreens/releases/latest/download/latest.zip",
-        "DownloadLinkTesting": null
+        "DownloadLinkTesting": null,
+        "IconUrl": "https://github.com/Abyeon/CustomLoadingScreens/blob/master/Assets/icon.png?raw=true"
     }
 ]
