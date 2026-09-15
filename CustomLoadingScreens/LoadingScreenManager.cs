@@ -51,7 +51,7 @@ public class LoadingScreenManager : IAsyncDisposable
         
         Service.AddonLifecycle.RegisterListener(AddonEvent.PostHide, "_LocationTitle", OnLoadingScreenHide);
         
-        Service.Log.Verbose($"Loaded LoadingScreenManager");
+        Service.Log.Verbose("Loaded LoadingScreenManager");
 
         Service.ClientState.TerritoryChanged += OnTerritoryChanged;
     }
@@ -105,7 +105,7 @@ public class LoadingScreenManager : IAsyncDisposable
 
     private void SetLoadingScreenImage()
     {
-        Service.Log.Verbose($"Trying to set loading screen image");
+        Service.Log.Verbose("Trying to set loading screen image");
         
         if (configuration.ImagePaths.Count == 0) return;
         if (artworkImageNode is null) return;

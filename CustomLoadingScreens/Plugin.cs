@@ -1,12 +1,10 @@
-﻿using Dalamud.Game.Command;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using CustomLoadingScreens.Windows;
+using Dalamud.Game.Command;
+using Dalamud.Interface.Windowing;
 using Dalamud.IoC;
 using Dalamud.Plugin;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
-using Dalamud.Interface.Windowing;
-using Dalamud.Plugin.Services;
-using CustomLoadingScreens.Windows;
 using KamiToolKit;
 
 namespace CustomLoadingScreens;
