@@ -17,8 +17,7 @@ public class ConfigWindow : Window, IDisposable
     
     public ConfigWindow(Plugin plugin) : base("Custom Loading Screens###CustomLoadingScreensConfig")
     {
-        Flags = ImGuiWindowFlags.AlwaysAutoResize;
-        Size = new Vector2(800, 600);
+        Size = new Vector2(600, 600);
 
         configuration = plugin.Configuration;
         
@@ -46,19 +45,21 @@ public class ConfigWindow : Window, IDisposable
         
         if (items.Count == 0) return;
         
+        var windowWidth = ImGui.GetWindowPos().X + ImGui.GetWindowContentRegionMax().X;
         const int width = 256;
         var spacing = ImGui.GetStyle().ItemSpacing.X;
 
-        for (var i = 0; i < configuration.ImagePaths.ToList().Count; i++)
+        var paths = configuration.ImagePaths.ToList();
+        for (var i = 0; i < paths.Count; i++)
         {
-            var path = configuration.ImagePaths.ToList()[i];
+            var path = paths[i];
             using var id = ImRaii.PushId(i);
             var image = Service.TextureProvider.GetFromFile(path).GetWrapOrDefault();
             if (image is null) continue;
 
             Vector2 size = new(width, image.Height * width / image.Width);
 
-            if (i > 0 && ImGui.GetContentRegionAvail().X >= width + (spacing * 2))
+            if (i > 0 && windowWidth >= ImGui.GetItemRectMax().X + spacing + width)
                 ImGui.SameLine();
 
             ImGui.ImageButton(image.Handle, size);
