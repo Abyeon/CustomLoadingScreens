@@ -111,23 +111,9 @@ public class LoadingScreenManager : IAsyncDisposable
         
         if (configuration.ImagePaths.Count == 0) return;
         if (artworkImageNode is null) return;
-
+        
         artworkImageNode?.Timeline?.PlayAnimation(1, true);
         artworkImageNode?.IsVisible = true;
-    }
-
-    private void GetNextImage()
-    {
-        Task.Run(async () =>
-        {
-            var index = Random.Shared.Next(0, configuration.ImagePaths.Count);
-            var path = configuration.ImagePaths[index];
-            
-            Service.Log.Verbose($"Loading image {path}");
-            var texture = await Service.TextureProvider.GetFromFile(path).RentAsync();
-            
-            artworkImageNode?.ContentNode.LoadTexture(texture);
-        });
     }
     
     private void OnLoadingScreenHide(AddonEvent type, AddonArgs args)
@@ -137,7 +123,16 @@ public class LoadingScreenManager : IAsyncDisposable
         
         GetNextImage();
     }
-    
+
+    private void GetNextImage()
+    {
+        var index = Random.Shared.Next(0, configuration.ImagePaths.Count);
+        var path = configuration.ImagePaths[index];
+        
+        Service.Log.Verbose($"Loading image {path}");
+        artworkImageNode?.ContentNode.TexturePath = path;
+    }
+
     private void OnTerritoryChanged(uint obj)
     {
         if (!isTeleporting) SetLoadingScreenImage();
