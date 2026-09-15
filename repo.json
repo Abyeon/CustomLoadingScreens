@@ -4,7 +4,7 @@
         "Name": "Custom Loading Screens",
         "Description": "Replaces loading screen imagery with custom defined images.",
         "InternalName": "CustomLoadingScreens",
-        "AssemblyVersion": "0.0.0.1",
+        "AssemblyVersion": "0.0.0.3",
         "TestingAssemblyVersion": null,
         "RepoUrl": "https://github.com/Abyeon/CustomLoadingScreens",
         "ApplicableVersion": "any",
