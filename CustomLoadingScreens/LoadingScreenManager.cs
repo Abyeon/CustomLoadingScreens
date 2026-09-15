@@ -9,9 +9,7 @@ using FFXIVClientStructs.FFXIV.Component.GUI;
 using KamiToolKit.Controllers;
 using KamiToolKit.Enums;
 using KamiToolKit.Nodes;
-using KamiToolKit.Nodes.Simplified;
 using KamiToolKit.Timelines;
-using Lumina.Excel.Sheets;
 
 namespace CustomLoadingScreens;
 
