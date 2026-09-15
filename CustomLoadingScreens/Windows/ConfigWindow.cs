@@ -5,6 +5,7 @@ using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.ImGuiFileDialog;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Interface.Windowing;
+using Dalamud.Utility;
 
 namespace CustomLoadingScreens.Windows;
 
@@ -16,7 +17,10 @@ public class ConfigWindow : Window, IDisposable
     
     public ConfigWindow(Plugin plugin) : base("Custom Loading Screens###CustomLoadingScreensConfig")
     {
-        Size = new Vector2(600, 600);
+        SizeConstraints = new WindowSizeConstraints
+        {
+            MinimumSize = new Vector2(200, 600)
+        };
 
         configuration = plugin.Configuration;
         
@@ -25,6 +29,11 @@ public class ConfigWindow : Window, IDisposable
 
     public void Dispose() { }
 
+    private string selectedImagePath = string.Empty;
+
+    private const int ThumbnailWidth = 256;
+    private const int LargeImageWidth = 1024;
+    
     public override void Draw()
     {
         var items = configuration.ImagePaths;
@@ -42,11 +51,14 @@ public class ConfigWindow : Window, IDisposable
             });
         }
         
+        ImGui.Spacing();
+        
         if (items.Count == 0) return;
         
         var windowWidth = ImGui.GetWindowPos().X + ImGui.GetWindowContentRegionMax().X;
-        const int width = 256;
         var spacing = ImGui.GetStyle().ItemSpacing.X;
+
+        bool openLargeImagePopup = false;
 
         var paths = configuration.ImagePaths.ToList();
         for (var i = 0; i < paths.Count; i++)
@@ -56,12 +68,16 @@ public class ConfigWindow : Window, IDisposable
             var image = Service.TextureProvider.GetFromFile(path).GetWrapOrDefault();
             if (image is null) continue;
 
-            Vector2 size = new(width, image.Height * width / image.Width);
+            Vector2 size = new(ThumbnailWidth, image.Height * ThumbnailWidth / image.Width);
 
-            if (i > 0 && windowWidth >= ImGui.GetItemRectMax().X + spacing + width)
+            if (i > 0 && windowWidth >= ImGui.GetItemRectMax().X + spacing + ThumbnailWidth)
                 ImGui.SameLine();
 
-            ImGui.ImageButton(image.Handle, size);
+            if (ImGui.ImageButton(image.Handle, size))
+            {
+                selectedImagePath = path;
+                openLargeImagePopup = true;
+            }
 
             using var popup = ImRaii.ContextPopupItem($"image context menu");
             if (popup.Success)
@@ -73,5 +89,28 @@ public class ConfigWindow : Window, IDisposable
                 }
             }
         }
+
+        if (openLargeImagePopup)
+            ImGui.OpenPopup("LargeImagePopup");
+        
+        DrawLargeImagePopup();
+    }
+
+    private void DrawLargeImagePopup()
+    {
+        if (selectedImagePath.IsNullOrEmpty()) return;
+        
+        var selectedImage = Service.TextureProvider.GetFromFile(selectedImagePath).GetWrapOrDefault();
+        if (selectedImage is null) return;
+        
+        var center = ImGui.GetMainViewport().GetCenter();
+        Vector2 selectedSize = new(LargeImageWidth, selectedImage.Height * LargeImageWidth / selectedImage.Width);
+        
+        ImGui.SetNextWindowPos(center, ImGuiCond.Appearing, new Vector2(0.5f, 0.5f));
+
+        using var largePopup = ImRaii.Popup("LargeImagePopup", ImGuiWindowFlags.AlwaysAutoResize);
+        if (!largePopup.Success) return;
+
+        ImGui.Image(selectedImage.Handle, selectedSize);
     }
 }

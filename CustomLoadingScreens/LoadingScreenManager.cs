@@ -83,7 +83,7 @@ public class LoadingScreenManager : IAsyncDisposable
         
         artworkImageNode.AttachNode(addon, NodePosition.AsFirstChild);
         
-        GetNextImage();
+        LoadNextImage();
     }
     
     private unsafe void OnLocationTitleDraw(AtkUnitBase* addon)
@@ -103,7 +103,7 @@ public class LoadingScreenManager : IAsyncDisposable
         artworkImageNode = null;
     }
 
-    private void SetLoadingScreenImage()
+    private void PlayAnimation()
     {
         Service.Log.Verbose("Trying to set loading screen image");
         
@@ -119,10 +119,10 @@ public class LoadingScreenManager : IAsyncDisposable
         artworkImageNode?.IsVisible = false;
         isTeleporting = false;
         
-        GetNextImage();
+        LoadNextImage();
     }
 
-    private void GetNextImage()
+    private void LoadNextImage()
     {
         var index = Random.Shared.Next(0, configuration.ImagePaths.Count);
         var path = configuration.ImagePaths[index];
@@ -133,7 +133,7 @@ public class LoadingScreenManager : IAsyncDisposable
 
     private void OnTerritoryChanged(uint obj)
     {
-        if (!isTeleporting) SetLoadingScreenImage();
+        if (!isTeleporting) PlayAnimation();
     }
     
     private unsafe bool OnTeleport(Telepo* thisPtr, uint aetheryteId, byte subIndex)
@@ -144,7 +144,7 @@ public class LoadingScreenManager : IAsyncDisposable
             if (accepted)
             {
                 isTeleporting = true;
-                SetLoadingScreenImage();
+                PlayAnimation();
             }
         }
         catch (Exception exception) {

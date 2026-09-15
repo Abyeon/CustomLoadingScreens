@@ -14,6 +14,7 @@ public sealed class Plugin : IAsyncDalamudPlugin
     [PluginService] internal static IDalamudPluginInterface PluginInterface { get; private set; } = null!;
 
     private static LoadingScreenManager LoadingScreenManager { get; set; } = null!;
+    private static ConflictManager ConflictManager { get; set; } = null!;
 
     private const string CommandName = "/customloadingscreens";
 
@@ -29,6 +30,9 @@ public sealed class Plugin : IAsyncDalamudPlugin
         await KamiToolKitLibrary.InitializeAsync(PluginInterface, "CustomLoadingScreens");
         
         Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
+        
+        ConflictManager = new ConflictManager();
+        await ConflictManager.LoadAsync(PluginInterface);
         
         LoadingScreenManager = new LoadingScreenManager();
         await LoadingScreenManager.LoadAsync(Configuration);
