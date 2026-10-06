@@ -124,6 +124,8 @@ public class LoadingScreenManager : IAsyncDisposable
 
     private void LoadNextImage()
     {
+        if (configuration.ImagePaths.Count == 0) return;
+        
         var index = Random.Shared.Next(0, configuration.ImagePaths.Count);
         var path = configuration.ImagePaths[index];
         
