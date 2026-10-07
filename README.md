@@ -9,12 +9,13 @@ A quick and dirty re-implementation of VanillaPlus's FancyLoadingScreens with cu
 * Go teleport!
 
 ## How to install
-This plugin is undergoing the submission process for the main repository. Until then- you may use the custom repository listed here
+This plugin is officially a part of the main Dalamud plugin repository testing branch.
 
 * Open up `/xlsettings`
 * Go to the `Experimental` tab
-* Scroll down to `Custom Plugin Repositories` (Read the warning! Then ignore it because you trust me /s)
-* Add `https://raw.githubusercontent.com/Abyeon/CustomLoadingScreens/refs/heads/master/repo.json`
+* Tick the `Get plugin testing builds` box
+* Save
+* Go to `/xlplugins` and install Custom Loading Screens!
 
 ## Credits
 * [KamiToolKit](https://github.com/MidoriKami/KamiToolKit)
